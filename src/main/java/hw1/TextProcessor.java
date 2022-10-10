@@ -22,6 +22,7 @@ package hw1;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
 public class TextProcessor {
     private final String DICTIONARY_URL = "https://www.gutenberg.org/cache/epub/29765/pg29765.txt";
     private URL url;
-    private Map<String, Integer> wordMap;
+    private TreeMap<String, Integer> wordMap;
     private ArrayList<String> masterDictionary;
     private int totalWords;
     private int totalGoodWordsDiscarded;
@@ -60,35 +61,25 @@ public class TextProcessor {
     }
 
     private void processTextAtURL(URL url) throws IOException {
-        ArrayList<String> discarded = new ArrayList<>();
-        ArrayList<String> valid = new ArrayList<>();
-        ArrayList<String> modified = new ArrayList<>();
         Scanner scnr = new Scanner(url.openStream());
         while (scnr.hasNext()) {
             totalWords++;
             String word = scnr.next();
-            if (word.matches("[a-z]+") && word.matches("[^0-9A-Z]+")) {
-                Pattern p = Pattern.compile(".+(\\p{Punct}+)");
+            if (word.matches("^[^0-9A-Z]*[a-z]+[^0-9A-Z]*$") && !word.contains("’")) {
+                word = word.replaceAll("[”“]","");
+                Pattern p = Pattern.compile("(\\p{Punct}*)([a-z]+)(\\p{Punct}*)");
                 Matcher m = p.matcher(word);
                 if (m.matches()) {
-                    modified.add(word);
-                    word = word.substring(0,m.start(1));
-                    valid.add(word);
-//                    modified.add(word);
-                }
-                else {
-                    valid.add(word);
+                    word = m.group(2);
+                    if (isWordValid(word) && !wordMap.containsKey(word)) {
+                        wordMap.put(word, 1);
+                    }
+                    else if (isWordValid(word) && wordMap.containsKey(word)) {
+                        wordMap.put(word, wordMap.get(word) + 1);
+                    }
                 }
             }
-            else discarded.add(word);
         }
-
-        for (String w : discarded) {
-            System.out.println(w);
-        }
-//        for (String w : modified) {
-//            System.out.println(w);
-//        }
     }
 
     private boolean isWordValid(String word) {
@@ -107,24 +98,31 @@ public class TextProcessor {
 
     }
 
+    private List<Map.Entry<String, Integer>> sortByReverseFrequency(TreeMap<String, Integer> map) {
+        List<Map.Entry<String, Integer>> listOfKeysValues = new LinkedList<>();
+        for (Map.Entry<String, Integer> pair : map.entrySet()) {
+            listOfKeysValues.add(pair);
+        }
+
+        Comparator<Map.Entry> comparator = Comparator.comparing(Map.Entry<String, Integer>::getValue);
+        Collections.sort(listOfKeysValues, comparator.reversed());
+
+        return listOfKeysValues;
+    }
+
     public static void main(String[] args) throws IOException {
         TextProcessor t = new TextProcessor(new URL("https://www.bucknell.edu/"));
-//        t.generateMasterDictionary();
+        t.generateMasterDictionary();
 //        for (String word : t.masterDictionary) {
 //            System.out.println(word);
 //        }
 
-//        String word = "a";
-//        Pattern p = Pattern.compile("[(^0-9A-Z)(a-z)]+");
-//        Matcher m = p.matcher(word);
-//        if (m.matches()) {
-//            System.out.println(true);
-//        }
-//        else {
-//            System.out.println(false);
-//        }
-
         t.processTextAtURL(new URL("https://www.gutenberg.org/files/1342/1342-0.txt"));
 //        System.out.println(t.totalWords);
+        System.out.println("Unique words: " + t.wordMap.size());
+        List<Map.Entry<String, Integer>> frequency = t.sortByReverseFrequency(t.wordMap);
+        for (Map.Entry pair : frequency) {
+            System.out.println(pair.getKey() + ": " + pair.getValue());
+        }
     }
 }
