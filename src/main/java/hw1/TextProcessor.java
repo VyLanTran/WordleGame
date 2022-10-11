@@ -19,7 +19,9 @@
 
 package hw1;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -28,68 +30,35 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextProcessor {
-    private final String DICTIONARY_URL = "https://www.gutenberg.org/cache/epub/29765/pg29765.txt";
     private URL url;
     private TreeMap<String, Integer> wordMap;
-//    private ArrayList<String> masterDictionary;
-//    private ArrayList<String> fullMasterDictionary;
-    private Set<String> masterDictionary;
+    private TreeSet<String> goodWords;
+    private TreeSet<String> masterDictionary;
     private int totalWords;
     private int totalGoodWordsDiscarded;
     private int totalGoodWords;
     private int totalUniqueWords;
 
-    private ArrayList<String> goodWords;
     private ArrayList<String> invalidWords;
     private ArrayList<String> validButWrongLength;
     private ArrayList<String> otherErrors;
 
-    public TextProcessor(URL url) {
+    public TextProcessor(URL url, TreeSet<String> masterDictionary) {
         this.url = url;
-        this.masterDictionary = new TreeSet<>();
+        this.masterDictionary = masterDictionary;
         this.wordMap = new TreeMap<>();
+        this.goodWords = new TreeSet<>();
         this.totalWords = 0;
         this.totalGoodWordsDiscarded = 0;
         this.totalGoodWords = 0;
         this.totalUniqueWords = 0;
 
-//        this.fullMasterDictionary = new ArrayList<>();
-        this.goodWords = new ArrayList<>();
         this.invalidWords = new ArrayList<>();
         this.validButWrongLength = new ArrayList<>();
         this.otherErrors = new ArrayList<>();
     }
 
-    private void generateMasterDictionary() throws IOException {
-        URL pageLocation = new URL(DICTIONARY_URL);
-        Scanner scnr = new Scanner(pageLocation.openStream());
-        while (scnr.hasNext()) {
-            String word = scnr.next();
-            Pattern p = Pattern.compile("[A-Z]+");
-            Matcher m = p.matcher(word);
-//            if (m.matches() && !fullMasterDictionary.contains(word.toLowerCase())) {
-//                fullMasterDictionary.add(word.toLowerCase());
-//            }
-//            if (word.length() == 5 && m.matches() && !masterDictionary.contains(word.toLowerCase())) {
-//                masterDictionary.add(word.toLowerCase());
-//            }
-            if (word.length() == 5 && m.matches()) {
-                masterDictionary.add(word.toLowerCase());
-            }
-        }
-//        for (String w : fullMasterDictionary) {
-//            if (w.length() == 5) {
-//                masterDictionary.add(w);
-//            }
-//        }
-//        System.out.println(fullMasterDictionary.size());
-//        for (String w : fullMasterDictionary) {
-//            System.out.println(w);
-//        }
-    }
-
     private void processTextAtURL(URL url) throws IOException {
-        generateMasterDictionary();
         Scanner scnr = new Scanner(url.openStream());
         while (scnr.hasNext()) {
             totalWords++;
@@ -161,15 +130,7 @@ public class TextProcessor {
 
     public Set<String> getSetOfWords() throws IOException {
         processTextAtURL(url);
-        TreeSet<String> setOfGoodWords = new TreeSet<>();
-        for (String word : wordMap.keySet()) {
-            setOfGoodWords.add(word);
-        }
-        return setOfGoodWords;
-    }
-
-    public void writeListOfWords(String fileName) {
-
+        return goodWords;
     }
 
     private List<Map.Entry<String, Integer>> sortByReverseFrequency(TreeMap<String, Integer> map) {
@@ -184,18 +145,4 @@ public class TextProcessor {
         return listOfKeysValues;
     }
 
-    public static void main(String[] args) throws IOException {
-        TextProcessor t = new TextProcessor(new URL("https://www.gutenberg.org/files/1342/1342-0.txt"));
-//        t.generateMasterDictionary();
-//        for (String word : t.masterDictionary) {
-//            System.out.println(word);
-//        }
-
-//        t.printReport();
-        Set<String> s = t.getSetOfWords();
-        System.out.println(s.size());
-//        for (String w : s) {
-//            System.out.println(w);
-//        }
-    }
 }
