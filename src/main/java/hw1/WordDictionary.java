@@ -36,8 +36,9 @@ public class WordDictionary {
     public String[] LIST_OF_TEXT_URLS;
     private Set<String> wordSet;
     private TextProcessor textProcessor;
+    private ArrayList<String> wordList;
 
-    public WordDictionary(String fileName) {
+    public WordDictionary() {
         this.LIST_OF_BOOK_NAME = new String[]{"Pride and Prejudice",
                                                 "The Adventures of Sherlock Holmes",
                                                 "The Jazz Singer",
@@ -53,6 +54,7 @@ public class WordDictionary {
         this.masterDictionary = new TreeSet<>();
         this.wordSet = new TreeSet<>();
         this.textProcessor = null;
+        this.wordList =  new ArrayList<>();
     }
 
     private void generateMasterDictionary() throws IOException {
@@ -69,7 +71,7 @@ public class WordDictionary {
         }
     }
 
-    private void generateNewWordSet() throws IOException {
+    public void generateNewWordSet() throws IOException {
         generateMasterDictionary();
         for (int i = 0; i < LIST_OF_BOOK_NAME.length; i++) {
             textProcessor = new TextProcessor(new URL(LIST_OF_TEXT_URLS[i]), masterDictionary);
@@ -82,30 +84,35 @@ public class WordDictionary {
         }
         System.out.println("Keeping " + wordSet.size() + " valid words for the game...");
         System.out.println("Storing word dataset as " + fileName + "...");
+        System.out.println("READY!");
+        System.out.println();
     }
 
 //    public void addWords(List<String> wordList) {
 //
 //    }
 
-    public boolean isWordInSet(String word) {
-        return wordSet.contains(word);
-    }
-
-    public String getRandomWord() throws FileNotFoundException {
+    public ArrayList<String> getWordListFromFile() throws FileNotFoundException {
         // Read in words.txt
         Scanner scnr = new Scanner(new File(fileName));
-        ArrayList<String> words = new ArrayList<>();
         while (scnr.hasNext()) {
-            words.add(scnr.next());
+            wordList.add(scnr.next());
         }
+        return wordList;
+    }
+
+    public boolean isWordInSet(String word) {
+        return wordList.contains(word);
+    }
+
+    public String getRandomWord() {
         // Generate a random number <= size of the words set
-        int n = (int) (Math.random() * words.size());
-        return words.get(n);
+        int n = (int) (Math.random() * wordList.size());
+        return wordList.get(n);
     }
 
     public static void main(String[] args) throws IOException {
-        WordDictionary dict = new WordDictionary("https://www.gutenberg.org/files/1342/1342-0.txt");
+        WordDictionary dict = new WordDictionary();
         dict.generateNewWordSet();
         System.out.println();
 
