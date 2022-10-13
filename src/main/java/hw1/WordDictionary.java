@@ -30,31 +30,27 @@ import java.util.regex.Pattern;
 
 public class WordDictionary {
     private final String DICTIONARY_URL = "https://www.gutenberg.org/cache/epub/29765/pg29765.txt";
-    public TreeSet<String> masterDictionary;
-    private final String fileName = "words.txt";
-    public String[] LIST_OF_BOOK_NAME;
-    public String[] LIST_OF_TEXT_URLS;
-    private Set<String> wordSet;
-    private TextProcessor textProcessor;
-    private ArrayList<String> wordList;
+    private final String FILENAME = "words.txt";
+    private final String[] LIST_OF_BOOK_NAME = new String[]{"Pride and Prejudice",
+                                                            "The Adventures of Sherlock Holmes",
+                                                            "The Jazz Singer",
+                                                            "The Adventures of Huckleberry Finn",
+                                                            "The Essays of Ralph Waldo Emerson",
+                                                            "The Truth about the Titanic"};
+    private final String[] LIST_OF_TEXT_URLS = new String[]{"https://www.gutenberg.org/files/1342/1342-0.txt",
+                                                            "https://www.gutenberg.org/files/1661/1661-0.txt",
+                                                            "https://www.gutenberg.org/cache/epub/67583/pg67583.txt",
+                                                            "https://www.gutenberg.org/files/76/76-0.txt",
+                                                            "https://www.gutenberg.org/cache/epub/16643/pg16643.txt",
+                                                            "https://www.gutenberg.org/cache/epub/67584/pg67584.txt"};
+    private TreeSet<String> masterDictionary;
+    private Set<String> finalWordSet;
+    private ArrayList<String> finalWordList;
 
     public WordDictionary() {
-        this.LIST_OF_BOOK_NAME = new String[]{"Pride and Prejudice",
-                                                "The Adventures of Sherlock Holmes",
-                                                "The Jazz Singer",
-                                                "The Adventures of Huckleberry Finn",
-                                                "The Essays of Ralph Waldo Emerson",
-                                                "The Truth about the Titanic"};
-        this.LIST_OF_TEXT_URLS = new String[]{"https://www.gutenberg.org/files/1342/1342-0.txt",
-                                              "https://www.gutenberg.org/files/1661/1661-0.txt",
-                                              "https://www.gutenberg.org/cache/epub/67583/pg67583.txt",
-                                              "https://www.gutenberg.org/files/76/76-0.txt",
-                                              "https://www.gutenberg.org/cache/epub/16643/pg16643.txt",
-                                              "https://www.gutenberg.org/cache/epub/67584/pg67584.txt"};
         this.masterDictionary = new TreeSet<>();
-        this.wordSet = new TreeSet<>();
-        this.textProcessor = null;
-        this.wordList =  new ArrayList<>();
+        this.finalWordSet = new TreeSet<>();
+        this.finalWordList =  new ArrayList<>();
     }
 
     public void generateMasterDictionary() throws IOException {
@@ -64,7 +60,6 @@ public class WordDictionary {
             String word = scnr.next();
             Pattern p = Pattern.compile("[A-Z]+");
             Matcher m = p.matcher(word);
-
             if (word.length() == 5 && m.matches()) {
                 masterDictionary.add(word.toLowerCase());
             }
@@ -72,56 +67,35 @@ public class WordDictionary {
     }
 
     public void generateNewWordSet() throws IOException {
-        generateMasterDictionary();
         for (int i = 0; i < LIST_OF_BOOK_NAME.length; i++) {
-            textProcessor = new TextProcessor(new URL(LIST_OF_TEXT_URLS[i]), masterDictionary);
-            wordSet.addAll(textProcessor.getSetOfWords());
+            TextProcessor textProcessor = new TextProcessor(new URL(LIST_OF_TEXT_URLS[i]));
+            textProcessor.setMasterDictionary(masterDictionary);
+            textProcessor.processTextAtURL();
+            finalWordSet.addAll(textProcessor.getSetOfGoodWords());
             System.out.println("Reading in " + LIST_OF_BOOK_NAME[i] + "......done");
         }
-        PrintStream out = new PrintStream(fileName);
-        for (String word : wordSet) {
+        PrintStream out = new PrintStream(FILENAME);
+        for (String word : finalWordSet) {
             out.println(word);
         }
-        System.out.println("Keeping " + wordSet.size() + " valid words for the game...");
-        System.out.println("Storing word dataset as " + fileName + "...");
+        System.out.println("Keeping " + finalWordSet.size() + " valid words for the game...");
+        System.out.println("Storing word dataset as " + FILENAME + "...");
         System.out.println("READY!");
         System.out.println();
     }
 
-//    public void addWords(List<String> wordList) {
-//
-//    }
-
     public ArrayList<String> getWordListFromFile() throws FileNotFoundException {
         // Read in words.txt
-        Scanner scnr = new Scanner(new File(fileName));
+        Scanner scnr = new Scanner(new File(FILENAME));
         while (scnr.hasNext()) {
-            wordList.add(scnr.next());
+            finalWordList.add(scnr.next());
         }
-        return wordList;
+        return finalWordList;
     }
 
-    public boolean isWordInSet(String word) {
-        return wordList.contains(word);
-    }
-
-    public String getRandomWord() {
-        // Generate a random number <= size of the words set
-        int n = (int) (Math.random() * wordList.size());
-        return wordList.get(n);
-    }
-
-    public static void main(String[] args) throws IOException {
-        WordDictionary dict = new WordDictionary();
-//        dict.generateNewWordSet();
-//        System.out.println();
-//
-//        for (int i = 0; i < 200; i++) {
-//            System.out.println(dict.getRandomWord());
-//        }
-        dict.generateMasterDictionary();
-        for (String word : dict.masterDictionary) {
-            System.out.println(word);
-        }
+    public String getRandomWordFromList() {
+        // Generate a random number less than or equal to size of the words set
+        int n = (int) (Math.random() * finalWordList.size());
+        return finalWordList.get(n);
     }
 }

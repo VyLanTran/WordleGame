@@ -22,23 +22,24 @@ package hw1;
 import java.util.ArrayList;
 
 public class GuessEvaluator {
-    public String secretWord;
-    private String currentGuess;
-    private String guessAnalysis;
-    public ArrayList<String> wordList;
+    private String secretWord;
+    private ArrayList<String> finalWordList;
+
     public GuessEvaluator() {
-//        this.secretWord = "";
-//        this.currentGuess = "";
-//        this.guessAnalysis = "";
-//        this.wordList = new ArrayList<>();
+        this.secretWord = "";
+        this.finalWordList = new ArrayList<>();
     }
 
-    public void setWordList(ArrayList<String> wordList) {
-        this.wordList = wordList;
+    public void setWordList(ArrayList<String> finalWordList) {
+        this.finalWordList = finalWordList;
     }
 
     public void setSecretWord(String secretWord) {
         this.secretWord = secretWord;
+    }
+
+    private boolean isValidGuess(String guess) {
+        return guess.matches("[a-zA-Z]+");
     }
 
     public String analyzeGuess(String guess) {
@@ -51,40 +52,25 @@ public class GuessEvaluator {
             System.out.println("Invalid guess. Only 5-letter words are allowed. Try again!");
             return null;
         }
-        if (!wordList.contains(guess)) {
+        if (!finalWordList.contains(guess)) {
             System.out.println("Your guess is not in word list. Try again!");
             return null;
         }
-        String encodedString = "";
+        String guessAnalysis = "";
         for (int i = 0; i < guess.length(); i++) {
             String letter = guess.substring(i, i+1);
             if (!secretWord.contains(letter)) {
-                encodedString += "-";
+                guessAnalysis += "-";
             }
             else {
                 if (!letter.equals(secretWord.substring(i, i+1))) {
-                    encodedString += "+";
+                    guessAnalysis += "+";
                 }
                 else {
-                    encodedString += "*";
+                    guessAnalysis += "*";
                 }
             }
         }
-
-        return encodedString;
-    }
-
-    public boolean isValidGuess(String guess) {
-        return guess.matches("[a-zA-Z]+");
-    }
-
-    public static void main(String[] args) {
-        GuessEvaluator g = new GuessEvaluator();
-        g.secretWord = "house";
-        ArrayList<String> list = new ArrayList<>();
-        list.add("house");
-        list.add("guhse");
-        g.setWordList(list);
-        System.out.println(g.analyzeGuess("guhse"));
+        return guessAnalysis;
     }
 }
