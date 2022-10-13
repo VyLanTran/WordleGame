@@ -13,7 +13,7 @@
  * Class: GuessEvaluator
  *
  * Description:
- *
+ * A class analyzing player's guess
  * ****************************************
  */
 
@@ -21,8 +21,14 @@ package hw1;
 
 import java.util.ArrayList;
 
+/**
+ * A class used to analyze player's guess (i.e. check if guess is valid
+ * and how close it is to the secret words)
+ */
 public class GuessEvaluator {
+    /** Secret word used as key of the game */
     private String secretWord;
+    /** List of good words used to evaluate player's guesses */
     private ArrayList<String> finalWordList;
 
     public GuessEvaluator() {
@@ -30,18 +36,42 @@ public class GuessEvaluator {
         this.finalWordList = new ArrayList<>();
     }
 
+    /**
+     * Set word list to be the list provided
+     *
+     * @param finalWordList - a list of words
+     */
     public void setWordList(ArrayList<String> finalWordList) {
         this.finalWordList = finalWordList;
     }
 
+    /**
+     * Set the secret word to be the word provided
+     *
+     * @param secretWord - string representing a word
+     */
     public void setSecretWord(String secretWord) {
         this.secretWord = secretWord;
     }
 
+    /**
+     * Check if player's guess only contains letters
+     *
+     * @param guess - str representing player's guess
+     * @return - true if guess only contains letters, false otherwise
+     */
     private boolean isValidGuess(String guess) {
         return guess.matches("[a-zA-Z]+");
     }
 
+    /**
+     * Analyze the guess, print proper message to let user know about any error
+     * If there's no error, print an encoded string to let user know
+     * how close their guess is to the secret word
+     *
+     * @param guess - str representing user's guess
+     * @return - encoded string if guess is valid, null otherwise
+     */
     public String analyzeGuess(String guess) {
         guess = guess.toLowerCase();
         if (!isValidGuess(guess)) {

@@ -13,7 +13,7 @@
  * Class: WordDictionary
  *
  * Description:
- *
+ * A class representing a set of unique good words
  * ****************************************
  */
 
@@ -28,23 +28,35 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A class that stores a list of unique words to run the game,
+ * and generates a random secret word
+ */
+
 public class WordDictionary {
+    /** URL address of the dictionary */
     private final String DICTIONARY_URL = "https://www.gutenberg.org/cache/epub/29765/pg29765.txt";
+    /** Name of the file that stores all unique good words */
     private final String FILENAME = "words.txt";
+    /** List of novels to read in */
     private final String[] LIST_OF_BOOK_NAME = new String[]{"Pride and Prejudice",
                                                             "The Adventures of Sherlock Holmes",
                                                             "The Jazz Singer",
                                                             "The Adventures of Huckleberry Finn",
                                                             "The Essays of Ralph Waldo Emerson",
                                                             "The Truth about the Titanic"};
+    /** List of URL addresses of novels to read in */
     private final String[] LIST_OF_TEXT_URLS = new String[]{"https://www.gutenberg.org/files/1342/1342-0.txt",
                                                             "https://www.gutenberg.org/files/1661/1661-0.txt",
                                                             "https://www.gutenberg.org/cache/epub/67583/pg67583.txt",
                                                             "https://www.gutenberg.org/files/76/76-0.txt",
                                                             "https://www.gutenberg.org/cache/epub/16643/pg16643.txt",
                                                             "https://www.gutenberg.org/cache/epub/67584/pg67584.txt"};
+    /** Set of words read from the dictionary */
     private TreeSet<String> masterDictionary;
+    /** Set of 5-letter good words from novels after being filtered */
     private Set<String> finalWordSet;
+    /** List of all unique good words filtered */
     private ArrayList<String> finalWordList;
 
     public WordDictionary() {
@@ -53,6 +65,12 @@ public class WordDictionary {
         this.finalWordList =  new ArrayList<>();
     }
 
+    /**
+     * Read in the given dictionary and add 5-letter words
+     * with all uppercase letters to {@link #masterDictionary}
+     *
+     * @throws IOException if web page is not found
+     */
     public void generateMasterDictionary() throws IOException {
         URL pageLocation = new URL(DICTIONARY_URL);
         Scanner scnr = new Scanner(pageLocation.openStream());
@@ -66,6 +84,12 @@ public class WordDictionary {
         }
     }
 
+    /**
+     * Read in all given novels and store good words in {@link #finalWordSet}
+     * Write all good words to a file named "words.txt"
+     *
+     * @throws IOException
+     */
     public void generateNewWordSet() throws IOException {
         for (int i = 0; i < LIST_OF_BOOK_NAME.length; i++) {
             TextProcessor textProcessor = new TextProcessor(new URL(LIST_OF_TEXT_URLS[i]));
@@ -84,6 +108,15 @@ public class WordDictionary {
         System.out.println();
     }
 
+    /**
+     * Read words from "words.txt" and stores them in a list of words
+     * This function is required because sometimes the file is reused.
+     * In that case, {@link #finalWordSet}, which is created only when generating new file
+     * is empty, so it can't be used
+     *
+     * @return - list of words read from "words.txt"
+     * @throws FileNotFoundException
+     */
     public ArrayList<String> getWordListFromFile() throws FileNotFoundException {
         // Read in words.txt
         Scanner scnr = new Scanner(new File(FILENAME));
@@ -93,8 +126,13 @@ public class WordDictionary {
         return finalWordList;
     }
 
+    /**
+     * Choose a random word from the word list
+     *
+     * @return - a word from list of good words
+     */
     public String getRandomWordFromList() {
-        // Generate a random number less than or equal to size of the words set
+        // Generate a random number less than or equal to size of the words list
         int n = (int) (Math.random() * finalWordList.size());
         return finalWordList.get(n);
     }
