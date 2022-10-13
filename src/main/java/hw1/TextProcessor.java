@@ -72,10 +72,12 @@ public class TextProcessor {
                     if (isWordValid(word) && !wordMap.containsKey(word)) {
                         wordMap.put(word, 1);
                         goodWords.add(word);
+                        totalGoodWords++;
                     }
                     else if (isWordValid(word) && wordMap.containsKey(word)) {
                         wordMap.put(word, wordMap.get(word) + 1);
                         goodWords.add(word);
+                        totalGoodWords++;
                     }
                     else {validButWrongLength.add(word);}
                 }
@@ -90,42 +92,51 @@ public class TextProcessor {
     }
 
     public void printReport() {
-        totalGoodWords = goodWords.size();
         totalGoodWordsDiscarded = totalWords - totalGoodWords;
         totalUniqueWords = wordMap.size();
 
         System.out.println("Total number of words processed: " + totalWords);
+        System.out.println("------------------------");
         System.out.println("Total good words by wrong length: " + validButWrongLength.size());
         System.out.println("Total number of words kept: " + totalGoodWords);
+        System.out.println("Invalid words: " + invalidWords.size());
+        System.out.println("Words discarded by other errors: " + otherErrors.size());
+        System.out.println("------------------------");
         System.out.println("Number of unique words: " + totalUniqueWords);
         System.out.println("Top 20 most frequently occurring words");
-        List<Map.Entry<String, Integer>> frequency = sortByReverseFrequency(wordMap);
-        for (Map.Entry pair : frequency) {
-            System.out.println(pair.getKey() + ": " + pair.getValue());
-        }
-
-
-//        for (String w : invalidWords) {
-//            System.out.println(w);
+//        List<Map.Entry<String, Integer>> frequency = sortByReverseFrequency(wordMap);
+//        for (Map.Entry pair : frequency) {
+//            System.out.println(pair.getKey() + ": " + pair.getValue());
 //        }
-        System.out.println("Invalid: " + invalidWords.size());
+
+        int count = 0;
+//        for (String word : validButWrongLength) {
+//            if (word.length() == 5) {
+//                count++;
+//                System.out.println(word);
+//            }
+//        }
+        System.out.println("Should not delete: " + count);
+
 
 //        for (String w : validButWrongLength) {
 //            System.out.println(w);
 //        }
-        System.out.println("Valid but wrong length: " + validButWrongLength.size());
-//
+        System.out.println("Word with other errors and will be discarded: ");
 //        for (String w : otherErrors) {
 //            System.out.println(w);
 //        }
-        System.out.println("Other: " + otherErrors.size());
 
 //        for (String w : goodWords) {
 //            System.out.println(w);
 //        }
-        System.out.println("Valid: " + goodWords.size());
 
-        System.out.println("Unique words: " + wordMap.size());
+        System.out.println("-------------------------------");
+        System.out.println("Invalid words: ");
+//        for (String w : invalidWords) {
+//            System.out.println(w);
+//        }
+
     }
 
     public Set<String> getSetOfWords() throws IOException {
@@ -145,4 +156,11 @@ public class TextProcessor {
         return listOfKeysValues;
     }
 
+    public static void main(String[] args) throws IOException {
+        WordDictionary dict = new WordDictionary();
+        dict.generateMasterDictionary();
+        TextProcessor t = new TextProcessor(new URL("https://www.gutenberg.org/files/1342/1342-0.txt"), dict.masterDictionary);
+        t.processTextAtURL(new URL("https://www.gutenberg.org/files/1342/1342-0.txt"));
+        t.printReport();
+    }
 }

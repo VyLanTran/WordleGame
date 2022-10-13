@@ -52,7 +52,7 @@ public class GuessEvaluator {
             return null;
         }
         if (!wordList.contains(guess)) {
-            System.out.println("Your guess cannot be recognized. Try again!");
+            System.out.println("Your guess is not in word list. Try again!");
             return null;
         }
         String encodedString = "";

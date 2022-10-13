@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 public class WordDictionary {
     private final String DICTIONARY_URL = "https://www.gutenberg.org/cache/epub/29765/pg29765.txt";
-    private TreeSet<String> masterDictionary;
+    public TreeSet<String> masterDictionary;
     private final String fileName = "words.txt";
     public String[] LIST_OF_BOOK_NAME;
     public String[] LIST_OF_TEXT_URLS;
@@ -57,7 +57,7 @@ public class WordDictionary {
         this.wordList =  new ArrayList<>();
     }
 
-    private void generateMasterDictionary() throws IOException {
+    public void generateMasterDictionary() throws IOException {
         URL pageLocation = new URL(DICTIONARY_URL);
         Scanner scnr = new Scanner(pageLocation.openStream());
         while (scnr.hasNext()) {
@@ -113,11 +113,15 @@ public class WordDictionary {
 
     public static void main(String[] args) throws IOException {
         WordDictionary dict = new WordDictionary();
-        dict.generateNewWordSet();
-        System.out.println();
-
-        for (int i = 0; i < 200; i++) {
-            System.out.println(dict.getRandomWord());
+//        dict.generateNewWordSet();
+//        System.out.println();
+//
+//        for (int i = 0; i < 200; i++) {
+//            System.out.println(dict.getRandomWord());
+//        }
+        dict.generateMasterDictionary();
+        for (String word : dict.masterDictionary) {
+            System.out.println(word);
         }
     }
 }
