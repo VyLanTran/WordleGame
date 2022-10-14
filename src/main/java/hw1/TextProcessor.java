@@ -70,7 +70,7 @@ public class TextProcessor {
      * @param word - word to check
      * @return - true if word is in dictionary, false otherwise
      */
-    private boolean isGoodWord(String word) {
+    public boolean isGoodWord(String word) {
         return masterDictionary.contains(word);
     }
 

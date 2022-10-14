@@ -39,17 +39,17 @@ public class WordDictionary {
     /** Name of the file that stores all unique good words */
     private final String FILENAME = "words.txt";
     /** List of novels to read in */
-    private final String[] LIST_OF_BOOK_NAME = new String[]{"Pride and Prejudice",
-                                                            "The Adventures of Sherlock Holmes",
-                                                            "The Jazz Singer",
-                                                            "The Adventures of Huckleberry Finn",
+    private final String[] LIST_OF_BOOK_NAME = new String[]{"The Great Gatsby",
+                                                            "Jane Eyre",
+                                                            "The Adventures of Tom Sawyer",
+                                                            "The Wonderful Wizard of Oz",
                                                             "The Essays of Ralph Waldo Emerson",
                                                             "The Truth about the Titanic"};
     /** List of URL addresses of novels to read in */
-    private final String[] LIST_OF_TEXT_URLS = new String[]{"https://www.gutenberg.org/files/1342/1342-0.txt",
-                                                            "https://www.gutenberg.org/files/1661/1661-0.txt",
-                                                            "https://www.gutenberg.org/cache/epub/67583/pg67583.txt",
-                                                            "https://www.gutenberg.org/files/76/76-0.txt",
+    private final String[] LIST_OF_TEXT_URLS = new String[]{"https://www.gutenberg.org/cache/epub/64317/pg64317.txt",
+                                                            "https://www.gutenberg.org/files/1260/1260-0.txt",
+                                                            "https://www.gutenberg.org/files/74/74-0.txt",
+                                                            "https://www.gutenberg.org/files/55/55-0.txt",
                                                             "https://www.gutenberg.org/cache/epub/16643/pg16643.txt",
                                                             "https://www.gutenberg.org/cache/epub/67584/pg67584.txt"};
     /** Set of words read from the dictionary */
@@ -63,6 +63,10 @@ public class WordDictionary {
         this.masterDictionary = new TreeSet<>();
         this.finalWordSet = new TreeSet<>();
         this.finalWordList =  new ArrayList<>();
+    }
+
+    public TreeSet<String> getMasterDictionary() {
+        return this.masterDictionary;
     }
 
     /**

@@ -60,7 +60,7 @@ public class GuessEvaluator {
      * @param guess - str representing player's guess
      * @return - true if guess only contains letters, false otherwise
      */
-    private boolean isValidGuess(String guess) {
+    public boolean isValidGuess(String guess) {
         return guess.matches("[a-zA-Z]+");
     }
 
