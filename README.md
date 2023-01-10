@@ -27,6 +27,7 @@ Open the terminal, clone the source code, and run "Wordle.java"
 
 <div float="left" class="horizontalgap" style="width:10px">
   <img width="640" alt="wordle2" src="https://user-images.githubusercontent.com/85639418/211687051-427c01c5-6f7e-442f-b44c-0542498c4b1b.png">
+  <br><br>
   <img width="640" alt="wordle3" src="https://user-images.githubusercontent.com/85639418/211687060-e74f4ec7-0c74-48b7-83d0-cc66a845d380.png">
 </div>
 
