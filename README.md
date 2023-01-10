@@ -15,12 +15,12 @@ Name: Vy Tran
 
 Year: Sophomore
 
-Major: Computer Science
+Major: Bachelor of Science in Computer Science and Bachelor of Arts in Mathematics
 
 ## Project Information
 
-*Write a few sentences about your project. This can be done later, as you may not quite know all the details yet.*
+This game is based on the original Wordle game (https://www.nytimes.com/games/wordle/index.html)
 
 ## How to run it
 
-*IMPORTANT - Update this with information about how to build and run your project!
+Download the zip file, import it in an IDE and run the file named "Wordle.java" (path: src/main
