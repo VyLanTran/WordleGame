@@ -8,4 +8,4 @@ Download the zip file, import it in an IDE and run the file named "Wordle.java" 
 <br>
 <bold>OR</bold>
 <br>
-Open the terminal, clone the 
+Open the terminal, clone the source code, and run "Wordle.java"
