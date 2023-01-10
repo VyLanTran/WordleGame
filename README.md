@@ -6,6 +6,6 @@ This game is based on the original Wordle game (https://www.nytimes.com/games/wo
 
 Download the zip file, import it in an IDE and run the file named "Wordle.java" (path: src/main/java/hw1/Wordle.java)
 <br>
-<em>OR</em>
+<bold>OR</bold>
 <br>
 Open the terminal, clone the 
