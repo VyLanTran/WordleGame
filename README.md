@@ -18,5 +18,6 @@ Open the terminal, clone the source code, and run "Wordle.java"
 - Letter that appear at the correct position will be marked with the "*" symbol
 
 ## About the program
-- This is a simple a version of the Wordle game. All instructions and inputs will appear on the console only.
-- The program takes into account all possible cases (e.g: words with wrong lenth, words that don't exist, player wants to play again/quit the game, etc) and gives user proper instruction to avoid termination at the middle of the game.
+- This is a simple a version of the Wordle game. All instructions and inputs will appear on the console only
+- The program takes into account all possible cases (e.g: words with wrong lenth, words that don't exist, player wants to play again/quit the game, etc) and gives user proper instruction to avoid termination at the middle of the game
+- The dictionary of the game is created by going through 6 novels on the Internet and filtering out all valid 5-letter words
