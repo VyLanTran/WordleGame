@@ -8,7 +8,7 @@ Download the zip file, import it in an IDE and run the file named "Wordle.java" 
 <br>
 <bold>OR</bold>
 <br>
-Open the terminal, clone the source code, and run "Wordle.java"
+Open the terminal, clone the source code, and run the file named "Wordle.java"
 
 ## Rules
 - You will have 6 tries to guess a hidden 5-letter word
