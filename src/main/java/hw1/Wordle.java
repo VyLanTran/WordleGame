@@ -117,7 +117,9 @@ public class Wordle {
         Scanner scnr = new Scanner(System.in);
         if (gameState == GameState.NEW_GAME) {
             gameState = GameState.GAME_IN_PROGRESS;
-            System.out.println("***** Random secret word is: " + secretWord + " *****");
+
+            // Remove the comment of this line if you want to see the key beforehand
+//            System.out.println("***** Random secret word is: " + secretWord + " *****");
             System.out.println("Ready to play Wordle! You have " + NUMBER_OF_GUESSES + " guesses.");
             while (gameState == GameState.GAME_IN_PROGRESS) {
                 guessNumber++;
