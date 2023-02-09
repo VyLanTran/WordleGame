@@ -23,7 +23,7 @@ Open the terminal, clone the source code, and run the file named "Wordle.java"
 - The dictionary of the game is created by going through 6 novels on the Internet and filtering out all valid 5-letter words
 
 
-## Screenshots of the game
+## Images of the game
 
 <div float="left" class="horizontalgap" style="width:10px">
   <img width="640" alt="wordle2" src="https://user-images.githubusercontent.com/85639418/211687051-427c01c5-6f7e-442f-b44c-0542498c4b1b.png">
